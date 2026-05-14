@@ -1,8 +1,8 @@
-# Predictive Maintenance Data Preparation
+# Predictive Maintenance System
 
-This project prepares predictive maintenance data for a future machine learning model.
+This project builds a simple predictive maintenance system using machine sensor data.
 
-The main goal is to understand the raw CSV files, clean the data, explore it, and create useful features for predicting whether a machine may fail in the next 24 hours.
+The main goal is to understand the raw CSV files, clean the data, explore it, create useful features, train machine learning models, and use a simple app to predict whether a machine may fail in the next 24 hours.
 
 ## Project Files
 
@@ -10,11 +10,16 @@ The main goal is to understand the raw CSV files, clean the data, explore it, an
 | --- | --- |
 | `pdm_data_cleaning_eda_feature_engineering.ipynb` | Main beginner-friendly notebook for data cleaning, EDA, and feature engineering |
 | `pdm_model_training.ipynb` | Beginner-friendly notebook for training and comparing machine learning models |
+| `app.py` | Streamlit app for predicting machine failure risk |
 | `PdM_telemetry.csv` | Hourly sensor readings for each machine |
 | `PdM_errors.csv` | Machine error event records |
 | `PdM_failures.csv` | Actual machine component failure records |
 | `PdM_machines.csv` | Machine model and age information |
 | `PdM_maint.csv` | Machine maintenance history |
+| `pdm_modeling_data.csv` | Prepared dataset created by the data preparation notebook |
+| `pdm_feature_columns.csv` | Feature list created by the data preparation notebook |
+| `model.pkl` | Saved best machine learning model |
+| `feature_columns.pkl` | Saved feature list used by the prediction app |
 
 ## What the Notebook Covers
 
@@ -44,6 +49,15 @@ The model training notebook covers:
 6. Comparing model performance
 7. Saving the best model
 
+The Streamlit app covers:
+
+1. Loading the saved model
+2. Loading the saved feature columns
+3. Taking machine and sensor input from the user
+4. Preparing the input in the same format used during training
+5. Predicting failure risk for the next 24 hours
+6. Showing the result as Low, Medium, or High Risk
+
 ## Target Column
 
 The target column is:
@@ -67,9 +81,21 @@ This target can be used later for machine learning model training.
 4. This creates `pdm_modeling_data.csv` and `pdm_feature_columns.csv`.
 5. Open `pdm_model_training.ipynb`.
 6. Run all cells from top to bottom.
-7. This trains models and saves the best model as `model.pkl`.
+7. This trains models and saves the best model as `model.pkl` and the training feature list as `feature_columns.pkl`.
 
 Important: run the data preparation notebook before the model training notebook.
+
+## How to Run the App
+
+After running the notebooks and creating the saved model files, run the Streamlit app with:
+
+```bash
+streamlit run app.py
+```
+
+The app will open in the browser. Enter machine details, sensor readings, recent error count, and maintenance information to get the predicted failure risk.
+
+Note: this app is a simple learning project. During training, rolling average features are created from historical sensor readings. In the app, the current sensor reading is used as a simple substitute for recent average values because the user enters only one set of readings.
 
 ## Required Python Libraries
 
@@ -81,6 +107,7 @@ numpy
 matplotlib
 scikit-learn
 joblib
+streamlit
 ```
 
 Install all required libraries in one go with:
@@ -89,6 +116,12 @@ Install all required libraries in one go with:
 pip install -r requirements.txt
 ```
 
-## Next Step
+## Possible Improvements
 
-After model training, the next step can be creating a simple prediction app or prediction script.
+Future improvements can include:
+
+1. Adding inputs for specific error types such as `error1`, `error2`, and `error3`
+2. Using real historical readings to calculate rolling averages in the app
+3. Showing charts for sensor trends
+4. Improving the app design
+5. Adding more model evaluation details
